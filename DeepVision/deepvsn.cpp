@@ -26,6 +26,14 @@ void DeepVision::addCylinder(glm::vec3 left, glm::vec3 right, GLfloat radius, gl
 	bonds.push_back(Cylinder(left, right, radius, color));
 }
 
+void DeepVision::addPolyLine(std::vector<glm::vec3> points, glm::vec3 color)
+{
+	std::vector<Line> trajectory;
+	for (int i = 0; i < points.size() - 1; i++)
+		trajectory.push_back(Line(points[i], points[i + 1], color));
+	trajectories.push_back(trajectory);
+}
+
 void DeepVision::callback()
 {
 	if (keys[0])
@@ -55,4 +63,9 @@ void DeepVision::render()
 		this->renderer->DrawObject(object);
 	for (Cylinder &object : this->bonds)
 		this->renderer->DrawObject(object);
+	for (std::vector<Line> &traj : this->trajectories)
+	{
+		for (Line &line : traj)
+			this->renderer->DrawObject(line);
+	}
 }

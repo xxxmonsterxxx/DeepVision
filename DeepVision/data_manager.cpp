@@ -95,4 +95,11 @@ void Data_Manager::draw(DeepVision *wdgt)
 		wdgt->addCylinder(right, left, 0.05);
 		wdgt->addSphere(glm::vec3(bonds[i].pos_x, bonds[i].pos_y, bonds[i].pos_z), 0.1, glm::vec3(1.f,0.f,0.f));
 	}
+
+	std::vector<glm::vec3> points;
+	points.push_back(glm::vec3(0.f));
+	points.push_back(glm::vec3(1.f, 1.f, 2.f));
+	points.push_back(glm::vec3(3.f, 2.f, 5.f));
+	points.push_back(glm::vec3(5.f, 1.f, 3.f));
+	wdgt->addPolyLine(points);
 }

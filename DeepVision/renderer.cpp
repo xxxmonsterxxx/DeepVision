@@ -9,9 +9,11 @@ Renderer::Renderer(Shader &shader)
 
 	initVertexDataSphere();
 	initVertexDataCylind();
+	initVertexDataLine();
 
 	initGraphicalSettings(this->EBO_s, this->VBO_s, this->VAO_s, this->vertices_sphere, this->indices_sphere);
 	initGraphicalSettings(this->EBO_c, this->VBO_c, this->VAO_c, this->vertices_cylind, this->indices_cylind);
+	initGraphicalSettings(this->EBO_l, this->VBO_l, this->VAO_l, this->vertices_line, this->indices_line);
 }
 
 Renderer::~Renderer()
@@ -119,6 +121,15 @@ void Renderer::initVertexDataCylind()
 	}
 }
 
+void Renderer::initVertexDataLine()
+{
+	vertices_line.push_back(glm::vec3(0.f));
+	vertices_line.push_back(glm::vec3(1.f, 0.f, 0.f));
+
+	indices_line.push_back(0);
+	indices_line.push_back(1);
+}
+
 void Renderer::initGraphicalSettings(GLuint &EBO, GLuint &VBO, GLuint &VAO, std::vector<glm::vec3> vertices, std::vector<GLuint> indices)
 {
 	glGenVertexArrays(1, &VAO);
@@ -200,5 +211,39 @@ void Renderer::DrawObject(Cylinder &cylind)
 
 	glBindVertexArray(this->VAO_c);
 	glDrawElements(GL_TRIANGLES, this->indices_cylind.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
+void Renderer::DrawObject(Line &line)
+{
+	// Prepare transformations
+	this->shader.Use();
+
+
+	// Create transformations
+
+	glm::mat4 view;
+	view = glm::translate(view, glm::vec3(0.0f, 0.f, zoom - 1.f));
+	view = glm::rotate(view, (GLfloat)(current_betha), glm::vec3(1.0f, 0.0f, 0.0f));
+	view = glm::rotate(view, (GLfloat)(current_alpha), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 projection;
+	projection = glm::perspective(45.0f, (GLfloat)800 / (GLfloat)600, 0.1f, 100.0f);
+	glm::mat4 model;
+	model = glm::translate(model, line.move);
+	model = glm::rotate(model, glm::degrees(line.alpha_angle), line.axis);
+	model = glm::scale(model, line.size);
+	
+
+	this->shader.SetMatrix4("model", model);
+	this->shader.SetMatrix4("view", view);
+	this->shader.SetMatrix4("projection", projection);
+
+	// Render textured quad
+	this->shader.SetVector3f("myColor", line.color);
+
+
+	glBindVertexArray(this->VAO_l);
+	glLineWidth(5);
+	glDrawElements(GL_LINE_STRIP, sizeof(indices_line) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }

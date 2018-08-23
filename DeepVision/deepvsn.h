@@ -6,7 +6,6 @@
 
 #include <vector>
 
-
 class DeepVision
 {
 private:
@@ -26,11 +25,13 @@ public:
 
 	std::vector<Sphere> atoms;
 	std::vector<Cylinder> bonds;
+	std::vector<std::vector<Line>> trajectories;
 
 	DeepVision(GLuint width = 800, GLuint height = 600);
 
 	void addSphere(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), GLfloat radius = 1, glm::vec3 color = glm::vec3(0.0f, 0.0f, 1.0f));
 	void addCylinder(glm::vec3 left, glm::vec3 right, GLfloat radius = 1, glm::vec3 color = glm::vec3(0.0f, 0.0f, 1.0f));
+	void addPolyLine(std::vector<glm::vec3> points, glm::vec3 color = glm::vec3(0.0f, 0.0f, 1.0f));
 
 	void callback();
 	void render();
