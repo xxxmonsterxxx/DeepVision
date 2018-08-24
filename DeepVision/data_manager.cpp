@@ -96,10 +96,18 @@ void Data_Manager::draw(DeepVision *wdgt)
 		wdgt->addSphere(glm::vec3(bonds[i].pos_x, bonds[i].pos_y, bonds[i].pos_z), 0.1, glm::vec3(1.f,0.f,0.f));
 	}
 
-	std::vector<glm::vec3> points;
-	points.push_back(glm::vec3(0.f));
-	points.push_back(glm::vec3(1.f, 1.f, 2.f));
-	points.push_back(glm::vec3(3.f, 2.f, 5.f));
-	points.push_back(glm::vec3(5.f, 1.f, 3.f));
-	wdgt->addPolyLine(points);
+
+	for (int i = 0; i < numberOfBonds; i++)
+	{
+		std::vector<glm::vec3> points;
+		int inda = bonds[i].a_ind - 1;
+		int indb = bonds[i].b_ind - 1;
+		glm::vec3 left = glm::vec3(atoms[bonds[i].a_ind - 1].pos_x, atoms[bonds[i].a_ind - 1].pos_y, atoms[bonds[i].a_ind - 1].pos_z);
+		glm::vec3 midle = glm::vec3(bonds[i].pos_x, bonds[i].pos_y, bonds[i].pos_z);
+		glm::vec3 right = glm::vec3(atoms[bonds[i].b_ind - 1].pos_x, atoms[bonds[i].b_ind - 1].pos_y, atoms[bonds[i].b_ind - 1].pos_z);
+		points.push_back(left);
+		points.push_back(midle);
+		points.push_back(right);
+		wdgt->addPolyLine(points, glm::vec3(0.f, 1.f, 0.f));
+	}
 }
