@@ -43,6 +43,12 @@ private:
 
 	int **map;
 
+	int nummberOfCCPs;
+	std::vector <glm::vec3> cage_cp;
+
+	int nummberOfRCPs;
+	std::vector <glm::vec3> ring_cp;
+
 public:
 	Data_Manager();
 	void load_data(const GLchar * name_wfn, const GLchar * name_ñpt);

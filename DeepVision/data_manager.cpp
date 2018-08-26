@@ -50,10 +50,15 @@ void Data_Manager::load_data(const GLchar * name_wfn, const GLchar * name_cpt)
 	for (int i = 0; i < numberOfBonds; i++)
 		map[i] = new int[2];
 
+	getline(inp, tmp);
+	inp >> tmp >> tmp >> tmp >> this->nummberOfRCPs;
+	getline(inp, tmp);
+	inp >> tmp >> tmp >> tmp >> this->nummberOfCCPs;
+
 	while (tmp != "BONDS" && !inp.eof())
 	{
 		getline(inp, tmp);
-		for (int i = 0; i<4; i++) inp >> tmp;
+		for (int i = 0; i < 4; i++) inp >> tmp;
 	}
 	for (int j = 0; j<3; j++) getline(inp, tmp);
 
@@ -62,7 +67,6 @@ void Data_Manager::load_data(const GLchar * name_wfn, const GLchar * name_cpt)
 
 	for (int i = 0; i < numberOfBonds; i++)
 	{
-		cout << tmp;
 		bond_cp &b = bonds[i];
 		for (int j = 0; j < 9; j++)
 			inp >> tmp;
@@ -75,6 +79,51 @@ void Data_Manager::load_data(const GLchar * name_wfn, const GLchar * name_cpt)
 		for (int j = 0; j < 6; j++)
 			getline(inp, tmp);
 	}
+
+	while (tmp != "RINGS" && !inp.eof())
+	{
+		getline(inp, tmp);
+		for (int i = 0; i < 4; i++) inp >> tmp;
+	}
+
+	for (int j = 0; j < 4; j++) getline(inp, tmp);
+
+	for (int i = 0; i < this->nummberOfRCPs; i++)
+	{
+		float x, y, z;
+		inp >> tmp >> tmp >> x
+			>> tmp >> tmp >> y
+			>> tmp >> tmp >> z;
+
+		ring_cp.push_back(glm::vec3(x, y, z));
+
+		for (int j = 0; j < 7; j++)
+			getline(inp, tmp);
+	}
+
+	while (tmp != "CAGES" && !inp.eof())
+	{
+		getline(inp, tmp);
+		for (int i = 0; i < 3; i++) inp >> tmp;
+	}
+	
+	for (int j = 0; j < 4; j++) getline(inp, tmp);
+
+
+	for (int i = 0; i < this->nummberOfCCPs; i++)
+	{
+		float x, y, z;
+		inp >> tmp >> tmp >> x
+			>> tmp >> tmp >> y
+			>> tmp >> tmp >> z;
+		std::cout << x << y << z;
+		cage_cp.push_back(glm::vec3(x, y, z));
+
+		for (int j = 0; j < 7; j++)
+			getline(inp, tmp);
+	}
+
+
 }
 
 void Data_Manager::draw(DeepVision *wdgt)
@@ -109,5 +158,10 @@ void Data_Manager::draw(DeepVision *wdgt)
 		points.push_back(midle);
 		points.push_back(right);
 		wdgt->addPolyLine(points, glm::vec3(0.f, 1.f, 0.f));
+	}
+
+	for (int i = 0; i < this->nummberOfRCPs; i++)
+	{
+		wdgt->addSphere(ring_cp[i], 0.05, glm::vec3(0.f, 1.f, 0.f));
 	}
 }

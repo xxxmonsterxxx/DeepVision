@@ -6,6 +6,10 @@
 #include "deepvsn.h"
 #include "data_manager.h"
 
+#include <string>
+#include <iostream>
+
+
 // GLFW function declerations
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
@@ -21,6 +25,15 @@ DeepVision *widget;
 
 void main()
 {
+	std::string rscr = "resources/";
+	std::string wfn_name, cpt_name;
+
+	std::cout << "Welcome to Deep Vision(c)\
+		\nMolecular visualisator for data by \"TWOe\"\
+		\nFor more info pls read \"Readme\"\
+		\nEnter pls names of .wfn and .cpt files... \n";
+	std::cin >> wfn_name >> cpt_name;
+
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -43,15 +56,12 @@ void main()
 
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+
+	Data_Manager dt_mng;
+	dt_mng.load_data((rscr + wfn_name).c_str(), (rscr + cpt_name).c_str());
+
 	widget = new DeepVision();
-
-	/*widget->addSphere(glm::vec3(-0.5, 0, 0), 0.3, glm::vec3(1,0,0));
-	widget->addSphere(glm::vec3(0.5, 0, 0), 0.3, glm::vec3(0, 0, 1));
-	widget->addCylinder(glm::vec3(0, 0, 0), 0.02, 1, glm::vec3(0.3, 0.3, 0.5));*/
-
-	Data_Manager asd;
-	asd.load_data("resources/test.wfn","resources/test.cpt");
-	asd.draw(widget);
+	dt_mng.draw(widget);
 
 	while (!glfwWindowShouldClose(window))
 	{
