@@ -142,7 +142,7 @@ void Data_Manager::draw(DeepVision *wdgt)
 		glm::vec3 left = glm::vec3(atoms[bonds[i].a_ind - 1].pos_x, atoms[bonds[i].a_ind - 1].pos_y, atoms[bonds[i].a_ind - 1].pos_z);
 		glm::vec3 right = glm::vec3(atoms[bonds[i].b_ind - 1].pos_x, atoms[bonds[i].b_ind - 1].pos_y, atoms[bonds[i].b_ind - 1].pos_z);
 		wdgt->addCylinder(right, left, 0.05);
-		wdgt->addSphere(glm::vec3(bonds[i].pos_x, bonds[i].pos_y, bonds[i].pos_z), 0.1, glm::vec3(1.f,0.f,0.f));
+		wdgt->addSphere(glm::vec3(bonds[i].pos_x, bonds[i].pos_y, bonds[i].pos_z), 0.08, glm::vec3(1.f,0.f,0.f));
 	}
 
 
@@ -162,6 +162,11 @@ void Data_Manager::draw(DeepVision *wdgt)
 
 	for (int i = 0; i < this->nummberOfRCPs; i++)
 	{
-		wdgt->addSphere(ring_cp[i], 0.05, glm::vec3(0.f, 1.f, 0.f));
+		wdgt->addSphere(ring_cp[i], 0.08, glm::vec3(1.f, 1.f, 0.f));
+	}
+
+	for (int i = 0; i < this->nummberOfCCPs; i++)
+	{
+		wdgt->addSphere(cage_cp[i], 0.08, glm::vec3(0.5f, 0.9f, 0.5f));
 	}
 }
